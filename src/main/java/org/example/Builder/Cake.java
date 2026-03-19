@@ -1,19 +1,23 @@
 package org.example.Builder;
 
 /*
- * STAGE 2: Setter Methods Approach
- * We remove the heavy constructor and expose setters for each field.
- * BETTER THAN: Telescoping — at least we know what each value means.
+ * STAGE 3: Separate Builder Class with getBuilder() factory method.
  *
- * PROBLEM 1 — Inconsistent State:
- * The object is created first (empty), then fields are set one by one.
- * Between new Cake() and the last setter, the object is half-built and invalid.
+ * IMPROVEMENT OVER plain setter approach:
+ * - Cake.getBuilder() is a static method inside Cake itself —
+ *   Cake takes responsibility for providing its own builder.
+ *   Caller never needs to know CakeBuilder exists directly.
+ * - Each setter in CakeBuilder returns 'this' (CakeBuilder) —
+ *   enables fluent method chaining: .setSugar().setFlour().build()
+ * - build() inside CakeBuilder calls new Cake(this) —
+ *   Cake is only created when all values are ready.
  *
- * PROBLEM 2 — Not thread-safe:
- * Another thread can read the Cake object before all setters are called.
- *
- * PROBLEM 3 — No immutability:
- * Anyone can call setters anytime and mutate the object after creation.
+ * STILL A PROBLEM:
+ * - CakeBuilder is still a separate public class — Cake's constructor
+ *   must remain accessible, so new Cake(builder) can still be called
+ *   directly from anywhere, bypassing the builder chain.
+ * - Fields in Cake are NOT final — Cake remains mutable after build().
+ * - No true encapsulation — builder and product are in separate files.
  */
 
 public class Cake {
@@ -26,35 +30,31 @@ public class Cake {
     private double milk;  //cup
     private int cherry;
 
-    public Cake() {};
-
-    public void setSugar(double sugar) {
-        this.sugar = sugar;
+    /*
+     * Constructor accepts a CakeBuilder object.
+     * Cake reads all values from builder — single point of assignment.
+     * BUT: constructor is still package-accessible — not fully locked down.
+     */
+    public Cake(CakeBuilder cakeBuilder) {
+        this.sugar = cakeBuilder.getSugar();
+        this.butter = cakeBuilder.getButter();
+        this.eggs = cakeBuilder.getEggs();
+        this.vanilla = cakeBuilder.getVanilla();
+        this.flour = cakeBuilder.getFlour();
+        this.bakingPowder = cakeBuilder.getBakingPowder();
+        this.milk = cakeBuilder.getMilk();
+        this.cherry = cakeBuilder.getCherry();
     }
 
-    public void setButter(double butter) {
-        this.butter = butter;
-    }
-
-    public void setEggs(double eggs) {
-        this.eggs = eggs;
-    }
-
-    public void setVanilla(double vanilla) {
-        this.vanilla = vanilla;
-    }
-
-    public void setFlour(double flour) {
-        this.flour = flour;
-    }
-    public void setBakingPowder(double bakingPowder) {
-        this.bakingPowder = bakingpowder;
-    }
-    public void setMilk(double milk) {
-        this.milk = milk;
-    }
-    public void setCherry(int cherry) {
-        this.cherry = cherry;
+    /*
+     * WHY getBuilder() here inside Cake?
+     * Cake takes responsibility for providing its own builder.
+     * Caller only needs to know Cake — not CakeBuilder directly.
+     * This is cleaner than: new CakeBuilder() scattered everywhere.
+     * Usage: Cake.getBuilder().setSugar(1.0).setFlour(2.0).build()
+     */
+    public static CakeBuilder getBuilder() {
+        return new CakeBuilder();
     }
 
     public double getSugar() {
@@ -74,7 +74,7 @@ public class Cake {
     }
 
     public double getBakingPowder() {
-        return bakingpowder;
+        return bakingPowder;
     }
 
     public double getMilk() {
