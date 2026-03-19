@@ -1,24 +1,71 @@
 package org.example.Builder;
 
+/*
+ * STAGE 2: Setter Methods Approach
+ * We remove the heavy constructor and expose setters for each field.
+ * BETTER THAN: Telescoping — at least we know what each value means.
+ *
+ * PROBLEM 1 — Inconsistent State:
+ * The object is created first (empty), then fields are set one by one.
+ * Between new Cake() and the last setter, the object is half-built and invalid.
+ *
+ * PROBLEM 2 — Not thread-safe:
+ * Another thread can read the Cake object before all setters are called.
+ *
+ * PROBLEM 3 — No immutability:
+ * Anyone can call setters anytime and mutate the object after creation.
+ */
+
 public class Cake {
-    private final double sugar;   //cup
-    private final double butter;  //cup
-    private final int eggs;
-    private final int vanilla;     //spoon
-    private final double flour;   //cup
-    private final double bakingpowder; //spoon
-    private final double milk;  //cup
-    private final int cherry;
+    private double sugar;   //cup
+    private double butter;  //cup
+    private double eggs;
+    private double vanilla;     //spoon
+    private double flour;   //cup
+    private double bakingPowder; //spoon
+    private double milk;  //cup
+    private int cherry;
+
+    public Cake() {};
+
+    public void setSugar(double sugar) {
+        this.sugar = sugar;
+    }
+
+    public void setButter(double butter) {
+        this.butter = butter;
+    }
+
+    public void setEggs(double eggs) {
+        this.eggs = eggs;
+    }
+
+    public void setVanilla(double vanilla) {
+        this.vanilla = vanilla;
+    }
+
+    public void setFlour(double flour) {
+        this.flour = flour;
+    }
+    public void setBakingPowder(double bakingPowder) {
+        this.bakingPowder = bakingpowder;
+    }
+    public void setMilk(double milk) {
+        this.milk = milk;
+    }
+    public void setCherry(int cherry) {
+        this.cherry = cherry;
+    }
 
     public double getSugar() {
         return sugar;
     }
 
-    public int getEggs() {
+    public double getEggs() {
         return eggs;
     }
 
-    public int getVanilla() {
+    public double getVanilla() {
         return vanilla;
     }
 
@@ -26,7 +73,7 @@ public class Cake {
         return flour;
     }
 
-    public double getBakingpowder() {
+    public double getBakingPowder() {
         return bakingpowder;
     }
 
@@ -41,16 +88,4 @@ public class Cake {
     public double getButter() {
         return butter;
     }
-
-    public Cake(double sugar, double butter, int eggs, int vanilla, double flour, double bakingpowder, double milk, int cherry) {
-        this.sugar = sugar;
-        this.butter = butter;
-        this.eggs = eggs;
-        this.vanilla = vanilla;
-        this.flour = flour;
-        this.bakingpowder = bakingpowder;
-        this.milk = milk;
-        this.cherry = cherry;
-    }
-
 }

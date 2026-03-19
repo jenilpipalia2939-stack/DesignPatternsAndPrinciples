@@ -9,8 +9,17 @@ package org.example.Builder;
 public class Client {
     public static void client(String[] args) {
 
-        // BAD: What does 1,2,4,5,6,7,8,9 mean? No clarity at all.
-        // If you swap two values by mistake, the compiler won't catch it.
-        Cake blackForest = new Cake(1, 2, 4, 5, 6, 7, 8, 9);
+        // We know what each value is — clear improvement over telescoping.
+        // BUT: Cake is alive as an empty object before every setter runs.
+        Cake blackForest = new Cake();
+        blackForest.setSugar(1.0);
+        blackForest.setButter(0.5);
+        blackForest.setEggs(3.0);
+        blackForest.setVanilla(1.5);
+        blackForest.setFlour(2.0);
+        blackForest.setBakingPowder(0.5);
+        // Forgot setMilk() and setCherry() — no compile error, no runtime error.
+        // Cake exists but is silently incomplete — a hidden bug in production.
+
     }
 }
