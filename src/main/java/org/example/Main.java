@@ -23,7 +23,7 @@ public class Main {
                 .setVanilla(1.5)        // 1.5 spoon
                 .setFlour(2.0)          // 2 cups
                 .setBakingPowder(0.5)   // 0.5 spoon
-                .setMilk(1.0)           // 1 cup
+//                .setMilk(1.0)           // 1 cup
                 .setCherry(10)          // 10 cherries
                 .build();
 

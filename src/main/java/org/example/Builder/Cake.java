@@ -194,8 +194,8 @@ public class Cake {
             if (flour        <= 0) throw new IllegalArgumentException("Flour is required");
             if (eggs         <= 0) throw new IllegalArgumentException("At least 1 egg is required");
             if (bakingPowder <= 0) throw new IllegalArgumentException("Baking powder is required");
-            if (sugar        <  0) throw new IllegalArgumentException("Sugar cannot be negative");
-            if (milk         <  0) throw new IllegalArgumentException("Milk cannot be negative");
+            if (sugar        <=  0) throw new IllegalArgumentException("Sugar cannot be negative");
+            if (milk         <=  0) throw new IllegalArgumentException("Milk cannot be negative");
             return new Cake(this); // private constructor — ONLY this line in the entire project can do this
         }
     }
